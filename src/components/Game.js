@@ -23,24 +23,20 @@ function Game(props) {
 
   //prompt the user to enter colum and rows
   useEffect(() => {
-    let valueX = prompt('enter colums: ');
+    let valueX = prompt('enter columns: ');
     let valueY = prompt('enter rows: ');
+
     //assign default values of 10 to x and y if no value is supplied by the user
     if (
-      valueX === 0 ||
-      valueX === undefined ||
-      valueX.trim() === '' ||
-      valueX !== isNaN
-    ) {
-      valueX = 10;
-    }
-    if (
-      valueY === 0 ||
-      valueY === undefined ||
+      valueY === null ||
+      valueX === null ||
       valueY.trim() === '' ||
-      valueY !== isNaN
+      valueX.trim() === '' ||
+      isNaN(valueX) === true ||
+      isNaN(valueY) === true
     ) {
       valueY = 10;
+      valueX = 10;
     }
 
     setValX(parseInt(valueX, 10));
@@ -145,12 +141,12 @@ function Game(props) {
     }
   }
 
-  //end game if there is no more food and refresh for a new game after 3s.
+  //end game if there is no more food and refresh for a new game after 2s.
   if (xCord.length > 0 && tracker.current === xCord.length) {
     alert(`Game over, You completed game in ${score.current} moves`);
     setTimeout(() => {
       window.location.reload();
-    }, 3000);
+    }, 2000);
   }
   //check if the coordinate are returned and place the player on the middle point of the game
   //the extra check for x or y = 0 is because x = 0 or y == 0 is a falsy value hence the position will not be updated
