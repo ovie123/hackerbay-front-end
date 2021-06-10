@@ -1,35 +1,15 @@
-.square {
+.container {
+  display: flex;
+}
+.box {
   width: 40px;
   height: 40px;
   border: 1px solid;
   text-align: center;
 }
 
-.rows {
-  display: flex;
-}
 p {
   margin: 0;
-}
-
-.me {
-  display: none;
-}
-
-/*button styling */
-.btn {
-  width: 150px;
-  height: 50px;
-  background: green;
-  color: white;
-  border-radius: 10px;
-  cursor: pointer;
-  outline: none;
-  margin: 50px;
-}
-
-.active {
-  background: red;
 }
 
 img {

@@ -25,11 +25,12 @@ function Game(props) {
   useEffect(() => {
     let valueX = prompt('enter colums: ');
     let valueY = prompt('enter rows: ');
+    //assign default values of 10 to x and y if no value is supplied by the user
     if (
       valueX === 0 ||
       valueX === undefined ||
       valueX.trim() === '' ||
-      valueX === isNaN
+      valueX !== isNaN
     ) {
       valueX = 10;
     }
@@ -37,7 +38,7 @@ function Game(props) {
       valueY === 0 ||
       valueY === undefined ||
       valueY.trim() === '' ||
-      valueY === isNaN
+      valueY !== isNaN
     ) {
       valueY = 10;
     }
@@ -46,11 +47,11 @@ function Game(props) {
     setValY(parseInt(valueY, 10));
   }, []);
 
-  //random coordinate state
+  // some random coordinate state
   const [xCord, setXCord] = useState([]);
   const [yCord, setYCord] = useState([]);
 
-  //creating the game board
+  //game board
   let arr = [];
   for (let i = 0; i < valX; i++) {
     arr.push([]);
@@ -63,18 +64,18 @@ function Game(props) {
     if (valX && valY) {
       const xCord = randomPoints(valX, valX);
       const yCord = randomPoints(valY, valX);
-      console.log(xCord, yCord);
+
       setXCord(xCord);
       setYCord(yCord);
     }
   }, [xP, yP, valX, valY]);
 
-  //watch user moves
+  //a reference to user moves
   let score = useRef(0);
 
   //handles the player movement using the arrow keys and then increment the score on any movement
   useEffect(() => {
-    function handleKey(e) {
+    const handleKey = (e) => {
       switch (e.key) {
         case 'ArrowRight':
           if (x < valX - 1) {
@@ -104,14 +105,14 @@ function Game(props) {
           console.log('unknown');
           break;
       }
-    }
+    };
 
     window.addEventListener('keydown', handleKey);
-    //removing event listener to prevent memory leakage
+    //remove event listener to prevent memory leaks
     return () => window.removeEventListener('keydown', handleKey);
   }, [y, x, valX, valY]);
 
-  //create and array to hold the game sprites
+  //an array to hold the game sprites
   const [alp, gh] = useState([]);
 
   useEffect(() => {
@@ -126,31 +127,30 @@ function Game(props) {
     }
   }, [valX]);
 
-  //it tracks the number of food remaing on the game
+  //a reference for the number of food remaining
   let tracker = useRef(0);
 
   //Assigns 4 food to a position on the game using the random coordinates
-
   if (xCord.length > 0) {
     for (let i = 0; i < xCord.length; i++) {
       arr[xCord[i]][yCord[i]] = <div>{[alp[i]]}</div>;
     }
 
-    //removes food if player gets to the point of the food and also track if food has been remove
+    //removes food if player gets to the point of the food
     for (let i = 0; i < xCord.length; i++) {
-      if (x === yCord[i] && y === xCord[i]) {
-        alp[i] = <p className="me">Faa</p>;
+      if (x === yCord[i] && y === xCord[i] && alp[i] !== null) {
+        alp[i] = null;
         tracker.current += 1;
       }
     }
   }
 
-  //check if theres no food on the board and ends game and display the number of moves taken by the user to collect all foods
+  //end game if there is no more food and refresh for a new game after 3s.
   if (xCord.length > 0 && tracker.current === xCord.length) {
+    alert(`Game over, You completed game in ${score.current} moves`);
     setTimeout(() => {
-      alert(`Game over, You completed game in ${score.current} moves`);
       window.location.reload();
-    });
+    }, 3000);
   }
   //check if the coordinate are returned and place the player on the middle point of the game
   //the extra check for x or y = 0 is because x = 0 or y == 0 is a falsy value hence the position will not be updated
